@@ -1,18 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  BookOpen, 
-  MessageCircle, 
-  Trophy, 
-  Gift, 
-  FileText, 
-  User, 
-  Menu, 
-  X,
-  Coins
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, User, Wallet, LogOut, Bell, X, Coins } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface NavbarProps {
   userRole?: 'student' | 'academic' | 'guest' | null;
@@ -24,12 +16,12 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "Home", href: "/", icon: null },
-    { label: "Experience Library", href: "/experiences", icon: BookOpen },
-    { label: "Q&A", href: "/qna", icon: MessageCircle },
-    { label: "Leaderboard", href: "/leaderboard", icon: Trophy },
-    { label: "Rewards", href: "/rewards", icon: Gift },
-    { label: "Resources", href: "/resources", icon: FileText },
+    { name: "Home", href: "/" },
+    { name: "Experiences", href: "/experiences" },
+    { name: "Q&A", href: "/qa" },
+    { name: "Leaderboard", href: "/leaderboard" },
+    { name: "Rewards", href: "/rewards" },
+    { name: "Resources", href: "/resources" },
   ];
 
   const getNavItems = () => {
@@ -57,12 +49,11 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
           <div className="hidden md:flex items-center space-x-6">
             {getNavItems().map((item) => (
               <Link
-                key={item.label}
+                key={item.name}
                 to={item.href}
                 className="flex items-center space-x-1 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
               >
-                {item.icon && <item.icon className="h-4 w-4" />}
-                <span>{item.label}</span>
+                <span>{item.name}</span>
               </Link>
             ))}
           </div>
@@ -77,7 +68,81 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
               </div>
             )}
 
-            {/* Auth Buttons */}
+          {userRole && (
+            <div className="flex items-center space-x-4">
+              {/* Notifications */}
+              <Button variant="ghost" size="sm" className="relative">
+                <Bell className="h-4 w-4" />
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                >
+                  3
+                </Badge>
+                <span className="sr-only">Notifications</span>
+              </Button>
+
+              {/* Wallet Balance for students */}
+              {userRole === 'student' && (
+                <div className="hidden md:flex items-center space-x-2 bg-card px-3 py-2 rounded-lg border">
+                  <Wallet className="h-4 w-4 coin-pulse" />
+                  <span className="font-semibold">{walletBalance}</span>
+                  <span className="text-xs text-muted-foreground">coins</span>
+                </div>
+              )}
+
+              {/* User Profile Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="relative">
+                    <User className="h-4 w-4" />
+                    <span className="sr-only">User menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  {userRole === 'student' && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link to="/student-dashboard" className="flex items-center">
+                          <User className="mr-2 h-4 w-4" />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <div className="flex items-center">
+                          <Wallet className="mr-2 h-4 w-4" />
+                          Wallet: {walletBalance} coins
+                        </div>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+
+                  {userRole === 'academic' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/academic-dashboard" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        Academic Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
+
             {!userRole ? (
               <Button onClick={onAuthClick} className="btn-gradient">
                 Sign In
@@ -86,13 +151,7 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
               <Button onClick={onAuthClick} variant="outline">
                 Sign Up to Contribute
               </Button>
-            ) : (
-              <Link to="/profile">
-                <Button variant="ghost" size="sm">
-                  <User className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
+            ) : null}
 
             {/* Mobile Menu Button */}
             <Button
@@ -112,13 +171,12 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
             <div className="flex flex-col space-y-3">
               {getNavItems().map((item) => (
                 <Link
-                  key={item.label}
+                  key={item.name}
                   to={item.href}
                   className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item.icon && <item.icon className="h-4 w-4" />}
-                  <span>{item.label}</span>
+                  <span>{item.name}</span>
                 </Link>
               ))}
               

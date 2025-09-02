@@ -6,8 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageCircle, ThumbsUp, Clock, Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import AskQuestionModal from "@/components/forms/ask-question-modal";
 
 const QAForum = () => {
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const questions = [
     {
       id: 1,
@@ -52,7 +54,7 @@ const QAForum = () => {
             <h1 className="text-3xl font-bold mb-2">Q&A Forum</h1>
             <p className="text-muted-foreground">Ask questions and get help from the community</p>
           </div>
-          <Button className="btn-gradient">
+          <Button className="btn-gradient" onClick={() => setIsAskModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Ask Question
           </Button>
@@ -110,6 +112,11 @@ const QAForum = () => {
             </Card>
           ))}
         </div>
+
+        <AskQuestionModal 
+          isOpen={isAskModalOpen} 
+          onClose={() => setIsAskModalOpen(false)} 
+        />
       </div>
     </Layout>
   );

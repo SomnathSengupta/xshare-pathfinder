@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ContributionHeatmap from "@/components/heatmap/contribution-heatmap";
+import ExperienceSharingForm from "@/components/forms/experience-sharing-form";
+import AskQuestionModal from "@/components/forms/ask-question-modal";
 import { 
   Share2, 
   MessageCircle, 
@@ -26,6 +28,8 @@ import {
 
 const StudentDashboard = () => {
   const [walletBalance] = useState(1250);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [userStats] = useState({
     experiencesShared: 8,
     questionsAnswered: 24,
@@ -52,7 +56,7 @@ const StudentDashboard = () => {
       description: "Share your latest interview experience",
       icon: Share2,
       color: "bg-primary",
-      action: () => console.log("Share experience"),
+      action: () => setIsShareModalOpen(true),
       reward: "+50 coins"
     },
     {
@@ -60,7 +64,7 @@ const StudentDashboard = () => {
       description: "Get help from the community",
       icon: MessageCircle,
       color: "bg-secondary",
-      action: () => console.log("Ask question"),
+      action: () => setIsAskModalOpen(true),
       reward: "Free"
     },
     {
@@ -68,7 +72,7 @@ const StudentDashboard = () => {
       description: "Explore interview experiences",
       icon: BookOpen,
       color: "bg-accent",
-      action: () => console.log("Browse library"),
+      action: () => window.location.href = "/experiences",
       reward: "Learn"
     }
   ];
@@ -152,7 +156,7 @@ const StudentDashboard = () => {
               </div>
             </Card>
             
-            <Button className="btn-gradient">
+            <Button className="btn-gradient" onClick={() => setIsShareModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Share Experience
             </Button>
@@ -370,6 +374,18 @@ const StudentDashboard = () => {
             </Card>
           </div>
         </div>
+
+        {/* Modals */}
+        <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+            <ExperienceSharingForm onClose={() => setIsShareModalOpen(false)} />
+          </DialogContent>
+        </Dialog>
+
+        <AskQuestionModal 
+          isOpen={isAskModalOpen} 
+          onClose={() => setIsAskModalOpen(false)} 
+        />
       </div>
     </Layout>
   );

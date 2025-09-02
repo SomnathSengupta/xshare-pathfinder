@@ -1,30 +1,40 @@
 import Layout from "@/components/layout/layout";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { 
-  BookOpen, 
-  MessageCircle, 
-  FileText,
-  BarChart3,
-  Users,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Star,
+  CheckCircle, 
+  XCircle, 
+  Clock, 
+  Users, 
+  FileText, 
+  MessageSquare, 
+  Upload,
   TrendingUp,
-  AlertTriangle,
+  Calendar,
+  Award,
   Eye,
+  Edit,
+  BookOpen,
+  Star,
+  MessageCircle,
+  BarChart3,
   ThumbsUp,
   ThumbsDown
 } from "lucide-react";
-import academicReviewImage from "@/assets/academic-review.jpg";
+import professorImage from "@/assets/professor-reviewing.jpg";
 
 const AcademicDashboard = () => {
+  const { toast } = useToast();
+  const [selectedExperience, setSelectedExperience] = useState<any>(null);
+  const [reviewComment, setReviewComment] = useState("");
   const [pendingExperiences, setPendingExperiences] = useState([
     {
       id: 1,
@@ -139,7 +149,7 @@ const AcademicDashboard = () => {
             </div>
             <div className="lg:w-80 mt-6 lg:mt-0">
               <img 
-                src={academicReviewImage} 
+                src={professorImage} 
                 alt="Academic reviewing submissions" 
                 className="rounded-lg shadow-lg"
               />
