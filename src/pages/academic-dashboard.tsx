@@ -1,331 +1,328 @@
+import Layout from "@/components/layout/layout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  FileCheck, 
+  BookOpen, 
   MessageCircle, 
-  Upload,
+  FileText,
   BarChart3,
   Users,
-  Building,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Star,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  Eye,
+  ThumbsUp,
+  ThumbsDown
 } from "lucide-react";
+import academicReviewImage from "@/assets/academic-review.jpg";
 
 const AcademicDashboard = () => {
-  const [stats] = useState({
-    pendingReviews: 12,
-    approvedExperiences: 45,
-    pendingQuestions: 8,
-    totalStudents: 230,
-    thisWeekSubmissions: 18
-  });
-
-  const pendingExperiences = [
+  const [pendingExperiences, setPendingExperiences] = useState([
     {
       id: 1,
+      title: "Software Engineer Interview - Google",
+      student: "Alex Kumar",
       company: "Google",
       role: "Software Engineer",
-      student: "Alex Rodriguez",
       submittedAt: "2 hours ago",
       status: "pending",
-      rounds: 4
+      content: "The interview process consisted of 4 rounds including coding, system design, and behavioral questions. The coding round focused on data structures and algorithms...",
+      details: {
+        rounds: ["Online Assessment", "Technical Phone Screen", "Onsite - Coding", "Onsite - System Design", "Behavioral"],
+        difficulty: "Hard",
+        outcome: "Selected"
+      }
     },
     {
       id: 2,
-      company: "Microsoft",
-      role: "Product Manager", 
+      title: "Product Manager Internship - Microsoft",
       student: "Sarah Chen",
+      company: "Microsoft",
+      role: "Product Manager Intern",
       submittedAt: "5 hours ago",
-      status: "needs_review",
-      rounds: 3
+      status: "pending",
+      content: "Applied through university career portal. The process included case study presentation and multiple behavioral interviews...",
+      details: {
+        rounds: ["Resume Screening", "Case Study", "Behavioral Interview", "Final Round"],
+        difficulty: "Medium",
+        outcome: "Selected"
+      }
     },
     {
       id: 3,
+      title: "Data Scientist Role - Amazon",
+      student: "Priya Sharma",
       company: "Amazon",
-      role: "SDE II",
-      student: "John Kim",
+      role: "Data Scientist",
       submittedAt: "1 day ago",
       status: "pending",
-      rounds: 5
+      content: "Challenging interview with focus on machine learning concepts, statistics, and practical problem solving...",
+      details: {
+        rounds: ["Phone Screen", "Technical Assessment", "ML Case Study", "Bar Raiser"],
+        difficulty: "Hard",
+        outcome: "Rejected"
+      }
     }
-  ];
+  ]);
 
-  const pendingQuestions = [
-    {
-      id: 1,
-      title: "How to prepare for system design rounds at FAANG?",
-      student: "Anonymous",
-      category: "Technical",
-      submittedAt: "3 hours ago",
-      urgency: "high"
-    },
-    {
-      id: 2,
-      title: "What should I expect in behavioral interviews?",
-      student: "Emma Wilson",
-      category: "Behavioral",
-      submittedAt: "6 hours ago", 
-      urgency: "medium"
-    }
-  ];
+  const handleApprove = (experienceId: number) => {
+    setPendingExperiences(experiences => 
+      experiences.map(exp => 
+        exp.id === experienceId 
+          ? { ...exp, status: "approved" }
+          : exp
+      )
+    );
+  };
 
-  const recentActivity = [
-    {
-      type: "approval",
-      description: "Approved Google SWE experience by Alex Rodriguez",
-      time: "1 hour ago"
-    },
-    {
-      type: "answer",
-      description: "Answered question about system design preparation",
-      time: "3 hours ago"
-    },
-    {
-      type: "upload",
-      description: "Uploaded new CS fundamentals resource",
-      time: "1 day ago"
-    }
-  ];
+  const handleReject = (experienceId: number) => {
+    setPendingExperiences(experiences => 
+      experiences.map(exp => 
+        exp.id === experienceId 
+          ? { ...exp, status: "rejected" }
+          : exp
+      )
+    );
+  };
 
-  const topCompanies = [
-    { name: "Google", submissions: 15, approved: 12 },
-    { name: "Microsoft", submissions: 12, approved: 10 },
-    { name: "Amazon", submissions: 10, approved: 8 },
-    { name: "Apple", submissions: 8, approved: 7 },
-    { name: "Meta", submissions: 6, approved: 5 }
+  const stats = [
+    { label: "Pending Reviews", value: "12", icon: Clock, color: "text-warning" },
+    { label: "Approved This Week", value: "28", icon: CheckCircle, color: "text-success" },
+    { label: "Total Contributions", value: "156", icon: BookOpen, color: "text-primary" },
+    { label: "Active Students", value: "89", icon: Users, color: "text-info" }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout userRole="academic">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Academic Dashboard</h1>
-          <p className="text-muted-foreground">Review and moderate student submissions</p>
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Academic Dashboard</h1>
+            <p className="text-muted-foreground">Review student submissions and manage platform content</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Badge variant="outline" className="text-accent border-accent">
+              <Star className="h-3 w-3 mr-1" />
+              Verified Academic
+            </Badge>
+          </div>
         </div>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-warning">{stats.pendingReviews}</div>
-              <div className="text-sm text-muted-foreground">Pending Reviews</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-success">{stats.approvedExperiences}</div>
-              <div className="text-sm text-muted-foreground">Approved</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-secondary">{stats.pendingQuestions}</div>
-              <div className="text-sm text-muted-foreground">Pending Q&A</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-primary">{stats.totalStudents}</div>
-              <div className="text-sm text-muted-foreground">Total Students</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-accent">{stats.thisWeekSubmissions}</div>
-              <div className="text-sm text-muted-foreground">This Week</div>
-            </CardContent>
-          </Card>
+        {/* Hero Section */}
+        <div className="relative rounded-xl overflow-hidden mb-8 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent">
+          <div className="flex flex-col lg:flex-row items-center p-6">
+            <div className="flex-1 space-y-4">
+              <h2 className="text-2xl font-bold text-primary">Welcome, Professor!</h2>
+              <p className="text-muted-foreground max-w-2xl">
+                Your role is crucial in maintaining the quality and authenticity of student experiences. 
+                Review submissions, verify information, and help build a trusted knowledge base for future students.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button className="btn-gradient">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Review Submissions
+                </Button>
+                <Button variant="outline">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Answer Questions
+                </Button>
+              </div>
+            </div>
+            <div className="lg:w-80 mt-6 lg:mt-0">
+              <img 
+                src={academicReviewImage} 
+                alt="Academic reviewing submissions" 
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
         </div>
 
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat) => (
+            <Card key={stat.label} className="card-hover">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                  </div>
+                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Main Content Tabs */}
         <Tabs defaultValue="reviews" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="reviews">Pending Reviews</TabsTrigger>
-            <TabsTrigger value="questions">Q&A Moderation</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="reviews" className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Pending Reviews
+            </TabsTrigger>
+            <TabsTrigger value="questions" className="flex items-center gap-2">
+              <MessageCircle className="h-4 w-4" />
+              Q&A Forum
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Resources
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="reviews" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileCheck className="h-5 w-5" />
-                  Experience Submissions Awaiting Review
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {pendingExperiences.map((exp) => (
-                    <div key={exp.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold">{exp.company} - {exp.role}</h3>
-                          {exp.status === 'needs_review' && (
-                            <Badge variant="destructive" className="text-xs">
-                              <AlertTriangle className="h-3 w-3 mr-1" />
-                              Needs Review
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          By {exp.student} • {exp.submittedAt} • {exp.rounds} rounds
+          {/* Pending Reviews Tab */}
+          <TabsContent value="reviews">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Experience Submissions for Review</h3>
+                <Badge variant="secondary">
+                  {pendingExperiences.filter(exp => exp.status === "pending").length} Pending
+                </Badge>
+              </div>
+
+              {pendingExperiences
+                .filter(exp => exp.status === "pending")
+                .map((experience) => (
+                <Card key={experience.id} className="card-hover">
+                  <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <CardTitle className="text-lg">{experience.title}</CardTitle>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-6 w-6">
+                              <AvatarFallback>{experience.student[0]}</AvatarFallback>
+                            </Avatar>
+                            <span>By {experience.student}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{experience.submittedAt}</span>
+                          <Badge 
+                            variant={experience.details.difficulty === 'Hard' ? 'destructive' : 
+                                   experience.details.difficulty === 'Medium' ? 'default' : 'secondary'}
+                          >
+                            {experience.details.difficulty}
+                          </Badge>
                         </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
-                          <Clock className="h-3 w-3 mr-1" />
-                          Review Later
-                        </Button>
-                        <Button size="sm" variant="destructive">
-                          <XCircle className="h-3 w-3 mr-1" />
-                          Reject
-                        </Button>
-                        <Button size="sm">
-                          <CheckCircle className="h-3 w-3 mr-1" />
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-success hover:bg-success/10"
+                          onClick={() => handleApprove(experience.id)}
+                        >
+                          <ThumbsUp className="h-4 w-4 mr-1" />
                           Approve
                         </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-destructive hover:bg-destructive/10"
+                          onClick={() => handleReject(experience.id)}
+                        >
+                          <ThumbsDown className="h-4 w-4 mr-1" />
+                          Reject
+                        </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="questions" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
-                  Questions Awaiting Response
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {pendingQuestions.map((question) => (
-                    <div key={question.id} className="p-4 border rounded-lg">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold">{question.title}</h3>
-                        <Badge variant={question.urgency === 'high' ? 'destructive' : 'secondary'} className="text-xs">
-                          {question.urgency} priority
-                        </Badge>
-                      </div>
-                      <div className="text-sm text-muted-foreground mb-3">
-                        By {question.student} • {question.submittedAt} • {question.category}
-                      </div>
-                      <Button size="sm">
-                        Answer Question
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="resources" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="h-5 w-5" />
-                  Upload Resources
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button className="h-24 flex flex-col">
-                    <Upload className="h-6 w-6 mb-2" />
-                    Upload Document
-                  </Button>
-                  <Button variant="outline" className="h-24 flex flex-col">
-                    <FileCheck className="h-6 w-6 mb-2" />
-                    Create Resource Link
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <div className="flex-1">
-                        <div className="text-sm">{activity.description}</div>
-                        <div className="text-xs text-muted-foreground">{activity.time}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Top Companies
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {topCompanies.map((company, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <Building className="h-4 w-4 text-primary" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-muted-foreground">{experience.content}</p>
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Interview Rounds:</h4>
+                          <div className="space-y-1">
+                            {experience.details.rounds.map((round, index) => (
+                              <div key={index} className="flex items-center gap-2 text-sm">
+                                <CheckCircle className="h-3 w-3 text-success" />
+                                <span>{round}</span>
+                              </div>
+                            ))}
                           </div>
-                          <span className="font-medium">{company.name}</span>
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {company.approved}/{company.submissions} approved
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Company:</span>
+                            <span className="text-sm">{experience.company}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Role:</span>
+                            <span className="text-sm">{experience.role}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Outcome:</span>
+                            <Badge variant={experience.details.outcome === "Selected" ? "default" : "destructive"}>
+                              {experience.details.outcome}
+                            </Badge>
+                          </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Engagement Metrics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-primary">85%</div>
-                    <div className="text-sm text-muted-foreground">Approval Rate</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-secondary">4.2</div>
-                    <div className="text-sm text-muted-foreground">Avg Response Time (hours)</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-accent">92%</div>
-                    <div className="text-sm text-muted-foreground">Student Satisfaction</div>
-                  </div>
-                </CardContent>
-              </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+          </TabsContent>
+
+          {/* Other tabs with placeholder content */}
+          <TabsContent value="questions">
+            <Card>
+              <CardHeader>
+                <CardTitle>Q&A Forum Management</CardTitle>
+                <p className="text-muted-foreground">Review and answer student questions</p>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Q&A management interface coming soon...</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="resources">
+            <Card>
+              <CardHeader>
+                <CardTitle>Resource Management</CardTitle>
+                <p className="text-muted-foreground">Upload and manage official resources</p>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Resource management interface coming soon...</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <Card>
+              <CardHeader>
+                <CardTitle>Platform Analytics</CardTitle>
+                <p className="text-muted-foreground">View engagement metrics and platform statistics</p>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Analytics dashboard coming soon...</p>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </Layout>
   );
 };
 

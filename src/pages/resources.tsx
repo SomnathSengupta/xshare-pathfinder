@@ -1,3 +1,4 @@
+import Layout from "@/components/layout/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -76,7 +77,7 @@ const Resources = () => {
   const categories = ["All", "Resume", "Interview Prep", "Technical", "Practice", "Career"];
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout userRole="student">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Resources Hub</h1>
@@ -196,7 +197,7 @@ const Resources = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

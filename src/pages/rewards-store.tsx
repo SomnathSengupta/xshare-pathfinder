@@ -1,3 +1,4 @@
+import Layout from "@/components/layout/layout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,7 @@ const RewardsStore = () => {
   const canAfford = (price: number) => walletBalance >= price;
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout userRole="student">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
@@ -153,7 +154,7 @@ const RewardsStore = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </Layout>
   );
 };
 

@@ -1,3 +1,4 @@
+import Layout from "@/components/layout/layout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ const ExperienceLibrary = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <Layout userRole="student">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Experience Library</h1>
@@ -130,7 +131,7 @@ const ExperienceLibrary = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
