@@ -146,7 +146,7 @@ const ExperienceLibrary = () => {
         
         {/* Share Experience Modal */}
         <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 border-0 bg-transparent shadow-none">
             <ExperienceSharingForm onClose={() => setIsShareModalOpen(false)} />
           </DialogContent>
         </Dialog>

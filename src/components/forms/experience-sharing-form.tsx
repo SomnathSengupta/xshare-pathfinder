@@ -269,63 +269,72 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Building2 className="h-5 w-5" />
-          Share Your Interview Experience
-        </CardTitle>
-        
-        {/* Status Bar */}
-        <div className="space-y-3">
-          <Progress value={(currentStep / steps.length) * 100} className="h-2" />
-          <div className="flex justify-between">
-            {steps.map((step) => (
-              <div key={step.id} className="flex flex-col items-center space-y-1">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  currentStep >= step.id 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-muted text-muted-foreground'
-                }`}>
-                  <step.icon className="h-4 w-4" />
-                </div>
-                <span className="text-xs text-center">{step.title}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-6">
-        {renderStepContent()}
-
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
-            disabled={currentStep === 1}
-          >
-            Previous
-          </Button>
+    <div className="w-full max-w-4xl mx-4 max-h-[90vh] overflow-auto">
+      <Card className="glass shadow-hero animate-scale">
+        <CardHeader className="pb-6">
+          <CardTitle className="text-2xl text-center text-gradient-primary flex items-center justify-center gap-2">
+            <Building2 className="h-6 w-6" />
+            Share Your Interview Experience
+          </CardTitle>
+          <p className="text-center text-muted-foreground">
+            Help fellow students by sharing your interview journey
+          </p>
           
-          {currentStep < steps.length ? (
+          {/* Status Bar */}
+          <div className="space-y-4 mt-6">
+            <Progress value={(currentStep / steps.length) * 100} className="h-3" />
+            <div className="flex justify-between">
+              {steps.map((step) => (
+                <div key={step.id} className="flex flex-col items-center space-y-2">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                    currentStep >= step.id 
+                      ? 'bg-primary text-primary-foreground shadow-button' 
+                      : 'bg-muted text-muted-foreground'
+                  }`}>
+                    <step.icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-xs text-center font-medium">{step.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="space-y-6">
+          <div className="bg-gradient-card p-6 rounded-lg">
+            {renderStepContent()}
+          </div>
+
+          <div className="flex justify-between pt-4">
             <Button
-              onClick={() => setCurrentStep(prev => prev + 1)}
-              disabled={
-                (currentStep === 1 && (!formData.company || !formData.role)) ||
-                (currentStep === 2 && formData.rounds.length === 0)
-              }
+              variant="outline"
+              onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
+              disabled={currentStep === 1}
+              className="px-6"
             >
-              Next
+              Previous
             </Button>
-          ) : (
-            <Button onClick={handleSubmit} className="btn-gradient">
-              Submit Experience
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+            
+            {currentStep < steps.length ? (
+              <Button
+                onClick={() => setCurrentStep(prev => prev + 1)}
+                disabled={
+                  (currentStep === 1 && (!formData.company || !formData.role)) ||
+                  (currentStep === 2 && formData.rounds.length === 0)
+                }
+                className="btn-gradient px-6"
+              >
+                Next Step
+              </Button>
+            ) : (
+              <Button onClick={handleSubmit} className="btn-gradient px-8">
+                🎉 Submit Experience
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
