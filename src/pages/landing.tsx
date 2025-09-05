@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/ui/navbar";
 import AuthModal from "@/components/auth/auth-modal";
+import { useAuth } from "@/contexts/auth-context";
 import { 
   Share2, 
   CheckCircle, 
@@ -24,11 +26,30 @@ import heroImage from "@/assets/hero-image.jpg";
 
 const LandingPage = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [userRole, setUserRole] = useState<'student' | 'academic' | 'guest' | null>(null);
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
 
-  const handleAuth = (role: 'student' | 'academic' | 'guest') => {
-    setUserRole(role);
-    // Here you would typically set up user session, redirect to dashboard, etc.
+  const handleAuthSuccess = (role: 'student' | 'academic' | 'guest') => {
+    const userData = {
+      id: '1',
+      email: 'user@example.com',
+      firstName: 'Alex',
+      lastName: 'Johnson',
+      role,
+      walletBalance: role === 'student' ? 1250 : undefined,
+    };
+    
+    login(userData);
+    setIsAuthModalOpen(false);
+    
+    // Navigate to appropriate dashboard
+    if (role === 'student') {
+      navigate('/student-dashboard');
+    } else if (role === 'academic') {
+      navigate('/academic-dashboard');
+    } else {
+      navigate('/experiences');
+    }
   };
 
   const features = [
@@ -125,8 +146,8 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar 
-        userRole={userRole} 
-        walletBalance={userRole === 'student' ? 150 : undefined}
+        userRole={user?.role} 
+        walletBalance={user?.walletBalance}
         onAuthClick={() => setIsAuthModalOpen(true)}
       />
 
@@ -411,7 +432,7 @@ const LandingPage = () => {
       <AuthModal 
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-        onAuth={handleAuth}
+        onAuth={handleAuthSuccess}
       />
     </div>
   );

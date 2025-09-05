@@ -4,12 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageCircle, ThumbsUp, Clock, Plus, Search } from "lucide-react";
+import { MessageCircle, ThumbsUp, Clock, Plus, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AskQuestionModal from "@/components/forms/ask-question-modal";
+import { useAuth } from "@/contexts/auth-context";
 
 const QAForum = () => {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterBy, setFilterBy] = useState("all");
+  const { user } = useAuth();
   const questions = [
     {
       id: 1,
@@ -47,31 +52,58 @@ const QAForum = () => {
   ];
 
   return (
-    <Layout userRole="student">
+    <Layout userRole={user?.role} walletBalance={user?.walletBalance}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Q&A Forum</h1>
             <p className="text-muted-foreground">Ask questions and get help from the community</p>
           </div>
-          <Button className="btn-gradient" onClick={() => setIsAskModalOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Ask Question
-          </Button>
+          {user && (
+            <Button className="btn-gradient" onClick={() => setIsAskModalOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Ask Question
+            </Button>
+          )}
         </div>
 
-        {/* Search */}
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search questions..."
-            className="pl-10"
-          />
+        {/* Search and Filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search questions..."
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Select value={filterBy} onValueChange={setFilterBy}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Filter by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Questions</SelectItem>
+              <SelectItem value="unanswered">Unanswered</SelectItem>
+              <SelectItem value="recent">Most Recent</SelectItem>
+              <SelectItem value="popular">Most Popular</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline">
+            <Filter className="h-4 w-4 mr-2" />
+            More Filters
+          </Button>
         </div>
 
         {/* Questions */}
         <div className="space-y-6">
-          {questions.map((question) => (
+          {questions
+            .filter(q => 
+              searchTerm === "" || 
+              q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              q.content.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((question) => (
             <Card key={question.id} className="card-hover cursor-pointer">
               <CardHeader>
                 <CardTitle className="text-lg">{question.title}</CardTitle>
@@ -110,13 +142,15 @@ const QAForum = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            ))}
         </div>
 
-        <AskQuestionModal 
-          isOpen={isAskModalOpen} 
-          onClose={() => setIsAskModalOpen(false)} 
-        />
+        {user && (
+          <AskQuestionModal 
+            isOpen={isAskModalOpen} 
+            onClose={() => setIsAskModalOpen(false)} 
+          />
+        )}
       </div>
     </Layout>
   );

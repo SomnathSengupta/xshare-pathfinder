@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Star, Building, Calendar } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ExperienceSharingForm from "@/components/forms/experience-sharing-form";
+import { Search, Filter, Star, Building, Calendar, Plus } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
 
 const ExperienceLibrary = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { user } = useAuth();
 
   const experiences = [
     {
@@ -49,9 +54,17 @@ const ExperienceLibrary = () => {
   return (
     <Layout userRole="student">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Experience Library</h1>
-          <p className="text-muted-foreground">Browse interview experiences shared by students</p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Experience Library</h1>
+            <p className="text-muted-foreground">Browse interview experiences shared by students</p>
+          </div>
+          {user?.role === 'student' && (
+            <Button className="btn-gradient" onClick={() => setIsShareModalOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Share Experience
+            </Button>
+          )}
         </div>
 
         {/* Search and Filters */}
@@ -130,6 +143,13 @@ const ExperienceLibrary = () => {
             </Card>
           ))}
         </div>
+        
+        {/* Share Experience Modal */}
+        <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+            <ExperienceSharingForm onClose={() => setIsShareModalOpen(false)} />
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

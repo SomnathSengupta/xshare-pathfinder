@@ -10,9 +10,10 @@ interface NavbarProps {
   userRole?: 'student' | 'academic' | 'guest' | null;
   walletBalance?: number;
   onAuthClick: () => void;
+  onLogout?: () => void;
 }
 
-const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
+const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -134,7 +135,7 @@ const Navbar = ({ userRole, walletBalance, onAuthClick }: NavbarProps) => {
                   )}
 
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={onLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </DropdownMenuItem>

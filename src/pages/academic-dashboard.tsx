@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/auth-context";
 import { 
   CheckCircle, 
   XCircle, 
@@ -33,6 +34,7 @@ import professorImage from "@/assets/professor-reviewing.jpg";
 
 const AcademicDashboard = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedExperience, setSelectedExperience] = useState<any>(null);
   const [reviewComment, setReviewComment] = useState("");
   const [pendingExperiences, setPendingExperiences] = useState([
