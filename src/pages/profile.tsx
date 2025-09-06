@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ContributionHeatmap from "@/components/heatmap/contribution-heatmap";
+import studentProfileImage from "@/assets/student-profile-1.jpg";
 import { 
   User, 
   Edit, 
@@ -31,7 +32,7 @@ const Profile = () => {
     location: "Boston, MA",
     bio: "Computer Science student passionate about AI and machine learning. Always eager to share experiences and help fellow students succeed.",
     joinDate: "January 2024",
-    avatar: "/placeholder.svg"
+    avatar: studentProfileImage
   });
 
   const [stats] = useState({

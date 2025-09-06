@@ -26,6 +26,12 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
     { name: "Resources", href: "/resources" },
   ];
 
+  const getDashboardLink = () => {
+    if (userRole === 'student') return '/student-dashboard';
+    if (userRole === 'academic') return '/academic-dashboard';
+    return '/profile';
+  };
+
   const getNavItems = () => {
     if (userRole === 'guest') {
       return navItems.slice(0, 4); // Limited access for guests
@@ -49,6 +55,14 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
+            {userRole && (
+              <Link
+                to={getDashboardLink()}
+                className="flex items-center space-x-1 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              >
+                <span>Dashboard</span>
+              </Link>
+            )}
             {getNavItems().map((item) => (
               <Link
                 key={item.name}
@@ -177,6 +191,15 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-card-border">
             <div className="flex flex-col space-y-3">
+              {userRole && (
+                <Link
+                  to={getDashboardLink()}
+                  className="flex items-center space-x-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>Dashboard</span>
+                </Link>
+              )}
               {getNavItems().map((item) => (
                 <Link
                   key={item.name}

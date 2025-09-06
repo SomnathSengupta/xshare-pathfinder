@@ -3,13 +3,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Medal, Star, TrendingUp } from "lucide-react";
+import studentProfile1 from "@/assets/student-profile-1.jpg";
+import academicProfile1 from "@/assets/academic-profile-1.jpg";
+import studentProfile2 from "@/assets/student-profile-2.jpg";
+import studentProfile3 from "@/assets/student-profile-3.jpg";
+import profileAvatar from "@/assets/profile-avatar.jpg";
 
 const Leaderboard = () => {
   const leaders = [
     {
       rank: 1,
       name: "Sarah Chen",
-      avatar: "/placeholder.svg",
+      avatar: studentProfile1,
       points: 2850,
       level: 5,
       badge: "Expert Contributor",
@@ -19,7 +24,7 @@ const Leaderboard = () => {
     {
       rank: 2,
       name: "Alex Rodriguez", 
-      avatar: "/placeholder.svg",
+      avatar: profileAvatar,
       points: 2650,
       level: 4,
       badge: "Top Helper",
@@ -29,7 +34,7 @@ const Leaderboard = () => {
     {
       rank: 3,
       name: "Priya Sharma",
-      avatar: "/placeholder.svg", 
+      avatar: studentProfile3, 
       points: 2400,
       level: 4,
       badge: "Mentor",
@@ -39,7 +44,7 @@ const Leaderboard = () => {
     {
       rank: 4,
       name: "David Kim",
-      avatar: "/placeholder.svg",
+      avatar: studentProfile2,
       points: 2100,
       level: 3,
       badge: "Rising Star", 
@@ -49,7 +54,7 @@ const Leaderboard = () => {
     {
       rank: 5,
       name: "Emma Wilson",
-      avatar: "/placeholder.svg",
+      avatar: academicProfile1,
       points: 1950,
       level: 3,
       badge: "Contributor",

@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Coins, ShoppingCart, Gift, Headphones, Backpack } from "lucide-react";
-import rewardImage from "@/assets/reward-icons.jpg";
+import waterBottleImage from "@/assets/water-bottle-headphones.jpg";
+import bagsImage from "@/assets/bags-collection.jpg";
 
 const RewardsStore = () => {
   const [walletBalance] = useState(1250);
@@ -15,7 +16,7 @@ const RewardsStore = () => {
       name: "XShare Water Bottle + Stickers",
       description: "Premium water bottle with XShare logo and exclusive sticker pack",
       price: 500,
-      image: rewardImage,
+      image: waterBottleImage,
       icon: Gift,
       inStock: true,
       category: "Merchandise"
@@ -25,7 +26,7 @@ const RewardsStore = () => {
       name: "Wireless Headphones",
       description: "High-quality wireless headphones perfect for study sessions",
       price: 1000,
-      image: rewardImage,
+      image: waterBottleImage,
       icon: Headphones,
       inStock: true,
       category: "Electronics"
@@ -35,7 +36,7 @@ const RewardsStore = () => {
       name: "Premium Laptop Bag",
       description: "Durable and stylish laptop bag for professionals",
       price: 1500,
-      image: rewardImage,
+      image: bagsImage,
       icon: Backpack,
       inStock: true,
       category: "Accessories"
@@ -45,7 +46,7 @@ const RewardsStore = () => {
       name: "XShare Backpack",
       description: "Spacious backpack with multiple compartments and XShare branding",
       price: 2000,
-      image: rewardImage,
+      image: bagsImage,
       icon: Backpack,
       inStock: false,
       category: "Merchandise"
@@ -82,8 +83,12 @@ const RewardsStore = () => {
             return (
               <Card key={reward.id} className={`card-hover ${!affordable && 'opacity-60'}`}>
                 <CardHeader>
-                  <div className="w-full h-48 bg-muted rounded-lg flex items-center justify-center mb-4">
-                    <IconComponent className="h-16 w-16 text-muted-foreground" />
+                  <div className="w-full h-48 bg-muted rounded-lg overflow-hidden mb-4">
+                    <img 
+                      src={reward.image} 
+                      alt={reward.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <Badge variant="outline" className="w-fit">
                     {reward.category}
