@@ -269,8 +269,8 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-4 max-h-[90vh] overflow-auto">
-      <Card className="glass shadow-hero animate-scale">
+    <div className="w-full max-w-4xl mx-auto">
+      <Card className="glass shadow-hero animate-scale max-h-[85vh] overflow-hidden flex flex-col">
         <CardHeader className="pb-6">
           <CardTitle className="text-2xl text-center text-gradient-primary flex items-center justify-center gap-2">
             <Building2 className="h-6 w-6" />
@@ -300,7 +300,7 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 flex-1 overflow-y-auto">
           <div className="bg-gradient-card p-6 rounded-lg">
             {renderStepContent()}
           </div>

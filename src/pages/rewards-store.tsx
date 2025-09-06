@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Coins, ShoppingCart, Gift, Headphones, Backpack } from "lucide-react";
+import rewardImage from "@/assets/reward-icons.jpg";
 
 const RewardsStore = () => {
   const [walletBalance] = useState(1250);
@@ -14,7 +15,7 @@ const RewardsStore = () => {
       name: "XShare Water Bottle + Stickers",
       description: "Premium water bottle with XShare logo and exclusive sticker pack",
       price: 500,
-      image: "/placeholder.svg",
+      image: rewardImage,
       icon: Gift,
       inStock: true,
       category: "Merchandise"
@@ -24,7 +25,7 @@ const RewardsStore = () => {
       name: "Wireless Headphones",
       description: "High-quality wireless headphones perfect for study sessions",
       price: 1000,
-      image: "/placeholder.svg", 
+      image: rewardImage,
       icon: Headphones,
       inStock: true,
       category: "Electronics"
@@ -34,7 +35,7 @@ const RewardsStore = () => {
       name: "Premium Laptop Bag",
       description: "Durable and stylish laptop bag for professionals",
       price: 1500,
-      image: "/placeholder.svg",
+      image: rewardImage,
       icon: Backpack,
       inStock: true,
       category: "Accessories"
@@ -44,7 +45,7 @@ const RewardsStore = () => {
       name: "XShare Backpack",
       description: "Spacious backpack with multiple compartments and XShare branding",
       price: 2000,
-      image: "/placeholder.svg",
+      image: rewardImage,
       icon: Backpack,
       inStock: false,
       category: "Merchandise"

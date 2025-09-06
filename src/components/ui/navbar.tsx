@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, User, Wallet, LogOut, Bell, X, Coins } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import profileAvatar from "@/assets/profile-avatar.jpg";
 
 interface NavbarProps {
   userRole?: 'student' | 'academic' | 'guest' | null;
@@ -96,7 +97,13 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="relative">
-                    <User className="h-4 w-4" />
+                    <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-primary/20">
+                      <img 
+                        src={profileAvatar} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <span className="sr-only">User menu</span>
                   </Button>
                 </DropdownMenuTrigger>
