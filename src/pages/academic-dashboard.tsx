@@ -45,7 +45,9 @@ const AcademicDashboard = () => {
       company: "Google",
       role: "Software Engineer",
       submittedAt: "2 hours ago",
-      status: "pending",
+      status: "approved",
+      approvedBy: "Dr. Sarah Wilson",
+      approvedAt: "1 day ago",
       content: "The interview process consisted of 4 rounds including coding, system design, and behavioral questions. The coding round focused on data structures and algorithms...",
       details: {
         rounds: ["Online Assessment", "Technical Phone Screen", "Onsite - Coding", "Onsite - System Design", "Behavioral"],
@@ -60,7 +62,9 @@ const AcademicDashboard = () => {
       company: "Microsoft",
       role: "Product Manager Intern",
       submittedAt: "5 hours ago",
-      status: "pending",
+      status: "approved",
+      approvedBy: "Prof. Michael Chen",
+      approvedAt: "3 days ago",
       content: "Applied through university career portal. The process included case study presentation and multiple behavioral interviews...",
       details: {
         rounds: ["Resume Screening", "Case Study", "Behavioral Interview", "Final Round"],
@@ -75,7 +79,9 @@ const AcademicDashboard = () => {
       company: "Amazon",
       role: "Data Scientist",
       submittedAt: "1 day ago",
-      status: "pending",
+      status: "approved", 
+      approvedBy: "Dr. Emily Rodriguez",
+      approvedAt: "2 days ago",
       content: "Challenging interview with focus on machine learning concepts, statistics, and practical problem solving...",
       details: {
         rounds: ["Phone Screen", "Technical Assessment", "ML Case Study", "Bar Raiser"],
@@ -199,33 +205,35 @@ const AcademicDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Pending Reviews Tab */}
+          {/* Approved Experiences History Tab */}
           <TabsContent value="reviews">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Experience Submissions for Review</h3>
+                <h3 className="text-lg font-semibold">Approved Experiences History</h3>
                 <Badge variant="secondary">
-                  {pendingExperiences.filter(exp => exp.status === "pending").length} Pending
+                  {pendingExperiences.filter(exp => exp.status === "approved").length} Approved
                 </Badge>
               </div>
 
               {pendingExperiences
-                .filter(exp => exp.status === "pending")
+                .filter(exp => exp.status === "approved")
                 .map((experience) => (
                 <Card key={experience.id} className="card-hover">
                   <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
                         <CardTitle className="text-lg">{experience.title}</CardTitle>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-6 w-6">
-                              <AvatarFallback>{experience.student[0]}</AvatarFallback>
-                            </Avatar>
-                            <span>By {experience.student}</span>
-                          </div>
-                          <span>•</span>
-                          <span>{experience.submittedAt}</span>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-6 w-6">
+                                <AvatarFallback>{experience.student[0]}</AvatarFallback>
+                              </Avatar>
+                              <span>By {experience.student}</span>
+                            </div>
+                            <span>•</span>
+                            <span>Approved {experience.approvedAt}</span>
+                            <span>•</span>
+                            <span>By {experience.approvedBy}</span>
                           <Badge 
                             variant={experience.details.difficulty === 'Hard' ? 'destructive' : 
                                    experience.details.difficulty === 'Medium' ? 'default' : 'secondary'}
@@ -234,26 +242,10 @@ const AcademicDashboard = () => {
                           </Badge>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-success hover:bg-success/10"
-                          onClick={() => handleApprove(experience.id)}
-                        >
-                          <ThumbsUp className="h-4 w-4 mr-1" />
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-destructive hover:bg-destructive/10"
-                          onClick={() => handleReject(experience.id)}
-                        >
-                          <ThumbsDown className="h-4 w-4 mr-1" />
-                          Reject
-                        </Button>
-                      </div>
+                      <Badge variant="default" className="text-success">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Approved
+                      </Badge>
                     </div>
                   </CardHeader>
                   <CardContent>

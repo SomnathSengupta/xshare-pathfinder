@@ -14,6 +14,7 @@ const QAForum = () => {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterBy, setFilterBy] = useState("all");
+  const [sortBy, setSortBy] = useState("recent");
   const { user } = useAuth();
   const questions = [
     {
@@ -98,11 +99,24 @@ const QAForum = () => {
         {/* Questions */}
         <div className="space-y-6">
           {questions
-            .filter(q => 
-              searchTerm === "" || 
-              q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              q.content.toLowerCase().includes(searchTerm.toLowerCase())
-            )
+            .filter(q => {
+              const matchesSearch = searchTerm === "" || 
+                q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                q.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                q.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+              
+              const matchesFilter = filterBy === "all" || 
+                (filterBy === "unanswered" && q.answers === 0) ||
+                (filterBy === "recent") ||
+                (filterBy === "popular" && q.upvotes > 15);
+              
+              return matchesSearch && matchesFilter;
+            })
+            .sort((a, b) => {
+              if (sortBy === "recent") return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+              if (sortBy === "popular") return b.upvotes - a.upvotes;
+              return 0;
+            })
             .map((question) => (
             <Card key={question.id} className="card-hover cursor-pointer">
               <CardHeader>

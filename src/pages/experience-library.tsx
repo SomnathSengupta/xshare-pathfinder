@@ -12,6 +12,8 @@ import { useAuth } from "@/contexts/auth-context";
 
 const ExperienceLibrary = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { user } = useAuth();
 
@@ -78,24 +80,26 @@ const ExperienceLibrary = () => {
               className="pl-10"
             />
           </div>
-          <Select>
+          <Select value={selectedCompany} onValueChange={setSelectedCompany}>
             <SelectTrigger className="w-full md:w-[200px]">
               <SelectValue placeholder="Company" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="">All Companies</SelectItem>
               <SelectItem value="google">Google</SelectItem>
               <SelectItem value="microsoft">Microsoft</SelectItem>
               <SelectItem value="amazon">Amazon</SelectItem>
             </SelectContent>
           </Select>
-          <Select>
+          <Select value={selectedRole} onValueChange={setSelectedRole}>
             <SelectTrigger className="w-full md:w-[200px]">
               <SelectValue placeholder="Role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="sde">Software Engineer</SelectItem>
-              <SelectItem value="pm">Product Manager</SelectItem>
-              <SelectItem value="sde2">SDE II</SelectItem>
+              <SelectItem value="">All Roles</SelectItem>
+              <SelectItem value="software engineer">Software Engineer</SelectItem>
+              <SelectItem value="product manager">Product Manager</SelectItem>
+              <SelectItem value="sde ii">SDE II</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline">
@@ -106,7 +110,16 @@ const ExperienceLibrary = () => {
 
         {/* Experience Cards */}
         <div className="space-y-6">
-          {experiences.map((experience) => (
+          {experiences
+            .filter(exp => 
+              (searchTerm === "" || 
+               exp.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               exp.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               exp.preview.toLowerCase().includes(searchTerm.toLowerCase())) &&
+              (selectedCompany === "" || exp.company.toLowerCase() === selectedCompany) &&
+              (selectedRole === "" || exp.role.toLowerCase() === selectedRole)
+            )
+            .map((experience) => (
             <Card key={experience.id} className="card-hover cursor-pointer">
               <CardHeader>
                 <div className="flex flex-col md:flex-row justify-between items-start gap-4">
