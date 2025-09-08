@@ -19,7 +19,9 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Experiences", href: "/experiences" },
+    ...(userRole === 'academic' 
+      ? [{ name: "Approved History", href: "/academic-dashboard" }] 
+      : [{ name: "Experiences", href: "/experiences" }]),
     { name: "Q&A", href: "/qa" },
     { name: "Leaderboard", href: "/leaderboard" },
     { name: "Rewards", href: "/rewards" },
@@ -78,10 +80,13 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
           <div className="flex items-center space-x-4">
             {/* Wallet for Students */}
             {userRole === 'student' && walletBalance !== undefined && (
-              <div className="hidden sm:flex items-center space-x-1 px-3 py-1 rounded-full bg-gradient-primary text-white text-sm font-medium">
+              <Link 
+                to="/rewards-store"
+                className="hidden sm:flex items-center space-x-1 px-3 py-1 rounded-full bg-gradient-primary text-white text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer"
+              >
                 <Coins className="h-4 w-4 coin-pulse" />
                 <span>{walletBalance}</span>
-              </div>
+              </Link>
             )}
 
           {userRole && (
@@ -100,11 +105,14 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
 
               {/* Wallet Balance for students */}
               {userRole === 'student' && (
-                <div className="hidden md:flex items-center space-x-2 bg-card px-3 py-2 rounded-lg border">
+                <Link 
+                  to="/rewards-store"
+                  className="hidden md:flex items-center space-x-2 bg-card px-3 py-2 rounded-lg border hover:bg-accent transition-colors cursor-pointer"
+                >
                   <Wallet className="h-4 w-4 coin-pulse" />
                   <span className="font-semibold">{walletBalance}</span>
                   <span className="text-xs text-muted-foreground">coins</span>
-                </div>
+                </Link>
               )}
 
               {/* User Profile Dropdown */}
@@ -138,10 +146,10 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <div className="flex items-center">
+                        <Link to="/rewards-store" className="flex items-center">
                           <Wallet className="mr-2 h-4 w-4" />
                           Wallet: {walletBalance} coins
-                        </div>
+                        </Link>
                       </DropdownMenuItem>
                     </>
                   )}
@@ -213,10 +221,14 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
               
               {/* Mobile Wallet */}
               {userRole === 'student' && walletBalance !== undefined && (
-                <div className="flex items-center space-x-2 py-2">
+                <Link 
+                  to="/rewards-store"
+                  className="flex items-center space-x-2 py-2 hover:text-primary transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <Coins className="h-4 w-4 coin-pulse" />
                   <span className="text-sm font-medium">{walletBalance} Coins</span>
-                </div>
+                </Link>
               )}
             </div>
           </div>
