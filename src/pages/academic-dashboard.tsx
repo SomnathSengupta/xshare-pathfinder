@@ -233,11 +233,11 @@ const AcademicDashboard = () => {
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="pending" className="space-y-6">
+        <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="pending" className="flex items-center gap-2">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Pending Reviews
+              Dashboard
             </TabsTrigger>
             <TabsTrigger value="approved" className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
@@ -257,11 +257,11 @@ const AcademicDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Pending Reviews Tab */}
-          <TabsContent value="pending">
+          {/* Dashboard Tab - Pending Reviews */}
+          <TabsContent value="dashboard">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Pending Experience Reviews</h3>
+                <h3 className="text-lg font-semibold">Remaining Approvals</h3>
                 <Badge variant="secondary">
                   {pendingExperiences.length} Pending
                 </Badge>
@@ -381,12 +381,13 @@ const AcademicDashboard = () => {
                               <Avatar className="h-6 w-6">
                                 <AvatarFallback>{experience.student[0]}</AvatarFallback>
                               </Avatar>
-                              <span>By {experience.student}</span>
-                            </div>
-                            <span>•</span>
-                            <span>Approved {experience.approvedAt}</span>
-                            <span>•</span>
-                            <span>By {experience.approvedBy}</span>
+                             <span>By {experience.student}</span>
+                           </div>
+                           <span>•</span>
+                           <span>Approved {experience.approvedAt}</span>
+                           <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                             Approved by {experience.approvedBy}
+                           </Badge>
                           <Badge 
                             variant={experience.details.difficulty === 'Hard' ? 'destructive' : 
                                    experience.details.difficulty === 'Medium' ? 'default' : 'secondary'}

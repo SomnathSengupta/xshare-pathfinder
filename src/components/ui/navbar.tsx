@@ -76,16 +76,16 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
             ))}
           </div>
 
-          {/* Right Side - Wallet & Auth */}
+          {/* Right Side - Auth */}
           <div className="flex items-center space-x-4">
-            {/* Wallet for Students */}
+            {/* Single Coin Icon for Students */}
             {userRole === 'student' && walletBalance !== undefined && (
               <Link 
-                to="/rewards-store"
-                className="hidden sm:flex items-center space-x-1 px-3 py-1 rounded-full bg-gradient-primary text-white text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer"
+                to="/rewards"
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gradient-to-r from-warning/10 to-accent/10 border border-warning/20 hover:shadow-md transition-all cursor-pointer group"
               >
-                <Coins className="h-4 w-4 coin-pulse" />
-                <span>{walletBalance}</span>
+                <Coins className="h-5 w-5 coin-pulse text-warning" />
+                <span className="font-semibold text-warning group-hover:text-accent transition-colors">{walletBalance}</span>
               </Link>
             )}
 
@@ -102,18 +102,6 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
                 </Badge>
                 <span className="sr-only">Notifications</span>
               </Button>
-
-              {/* Wallet Balance for students */}
-              {userRole === 'student' && (
-                <Link 
-                  to="/rewards-store"
-                  className="hidden md:flex items-center space-x-2 bg-card px-3 py-2 rounded-lg border hover:bg-accent transition-colors cursor-pointer"
-                >
-                  <Wallet className="h-4 w-4 coin-pulse" />
-                  <span className="font-semibold">{walletBalance}</span>
-                  <span className="text-xs text-muted-foreground">coins</span>
-                </Link>
-              )}
 
               {/* User Profile Dropdown */}
               <DropdownMenu>
@@ -138,20 +126,12 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
                   </DropdownMenuItem>
                   
                   {userRole === 'student' && (
-                    <>
-                      <DropdownMenuItem asChild>
-                        <Link to="/student-dashboard" className="flex items-center">
-                          <User className="mr-2 h-4 w-4" />
-                          Dashboard
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/rewards-store" className="flex items-center">
-                          <Wallet className="mr-2 h-4 w-4" />
-                          Wallet: {walletBalance} coins
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
+                    <DropdownMenuItem asChild>
+                      <Link to="/student-dashboard" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
                   )}
 
                   {userRole === 'academic' && (
@@ -219,10 +199,10 @@ const Navbar = ({ userRole, walletBalance, onAuthClick, onLogout }: NavbarProps)
                 </Link>
               ))}
               
-              {/* Mobile Wallet */}
+              {/* Mobile Coin Display */}
               {userRole === 'student' && walletBalance !== undefined && (
                 <Link 
-                  to="/rewards-store"
+                  to="/rewards"
                   className="flex items-center space-x-2 py-2 hover:text-primary transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

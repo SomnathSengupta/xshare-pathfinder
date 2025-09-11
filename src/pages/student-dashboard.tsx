@@ -146,15 +146,6 @@ const StudentDashboard = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <Card className="px-4 py-2 cursor-pointer card-hover" onClick={() => window.location.href = '/rewards'}>
-              <div className="flex items-center space-x-2">
-                <Coins className="h-5 w-5 coin-pulse" />
-                <div>
-                  <div className="font-semibold">{walletBalance} Coins</div>
-                  <div className="text-xs text-muted-foreground">Click to view rewards</div>
-                </div>
-              </div>
-            </Card>
             
             <Button className="btn-gradient" onClick={() => setIsShareModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
