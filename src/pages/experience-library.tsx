@@ -85,7 +85,7 @@ const ExperienceLibrary = () => {
               <SelectValue placeholder="Company" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Companies</SelectItem>
+              <SelectItem value="all">All Companies</SelectItem>
               <SelectItem value="google">Google</SelectItem>
               <SelectItem value="microsoft">Microsoft</SelectItem>
               <SelectItem value="amazon">Amazon</SelectItem>
@@ -96,7 +96,7 @@ const ExperienceLibrary = () => {
               <SelectValue placeholder="Role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Roles</SelectItem>
+              <SelectItem value="all">All Roles</SelectItem>
               <SelectItem value="software engineer">Software Engineer</SelectItem>
               <SelectItem value="product manager">Product Manager</SelectItem>
               <SelectItem value="sde ii">SDE II</SelectItem>
@@ -116,8 +116,8 @@ const ExperienceLibrary = () => {
                exp.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
                exp.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
                exp.preview.toLowerCase().includes(searchTerm.toLowerCase())) &&
-              (selectedCompany === "" || exp.company.toLowerCase() === selectedCompany) &&
-              (selectedRole === "" || exp.role.toLowerCase() === selectedRole)
+               (selectedCompany === "all" || selectedCompany === "" || exp.company.toLowerCase() === selectedCompany) &&
+               (selectedRole === "all" || selectedRole === "" || exp.role.toLowerCase() === selectedRole)
             )
             .map((experience) => (
             <Card key={experience.id} className="card-hover cursor-pointer">

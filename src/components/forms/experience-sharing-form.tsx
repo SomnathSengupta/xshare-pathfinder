@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Circle, Upload, Building2, Users, MessageSquare, Lightbulb, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/auth-context";
 
 interface ExperienceSharingFormProps {
   onClose?: () => void;
@@ -30,6 +31,7 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
     files: [] as File[]
   });
   const { toast } = useToast();
+  const { updateWallet } = useAuth();
 
   const steps = [
     { id: 1, title: "Company & Role", icon: Building2 },
@@ -63,11 +65,51 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
   };
 
   const handleSubmit = () => {
+    // Update wallet balance
+    updateWallet(50);
+    
+    // Trigger fireworks effect
+    const triggerFireworks = async () => {
+      const { default: confetti } = await import('canvas-confetti');
+      
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+
+      function randomInRange(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+        }));
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+        }));
+      }, 250);
+    };
+
+    triggerFireworks();
+    
     toast({
-      title: "Experience Shared Successfully! 🎉",
-      description: "You've earned 50 coins for sharing your interview experience.",
+      title: "🎉 Experience Shared Successfully!",
+      description: "Congratulations! You've earned 50 coins for sharing your interview experience.",
+      duration: 5000,
     });
-    onClose?.();
+    
+    setTimeout(() => {
+      onClose?.();
+    }, 1000);
   };
 
   const renderStepContent = () => {
@@ -254,11 +296,19 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
               <div><strong>Files:</strong> {formData.files.length} files uploaded</div>
             </div>
 
-            <div className="bg-primary/10 p-4 rounded-lg">
-              <h4 className="font-semibold text-primary mb-2">🎉 Reward Information</h4>
-              <p className="text-sm">
-                By sharing this detailed experience, you'll earn <strong>50 coins</strong> that can be used in the rewards store!
-              </p>
+            <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 p-6 rounded-xl border-2 border-primary/30 shadow-lg animate-pulse">
+              <h4 className="font-bold text-primary mb-3 text-lg flex items-center gap-2">
+                🎉 Amazing Reward Incoming!
+              </h4>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-gradient-primary mb-2">+50 COINS</div>
+                <p className="text-sm text-muted-foreground">
+                  By sharing this detailed experience, you'll earn <strong className="text-primary">50 coins</strong> that can be used in the rewards store!
+                </p>
+                <div className="mt-3 p-2 bg-success/10 border border-success/30 rounded-lg">
+                  <p className="text-xs text-success font-medium">🚀 Plus fireworks celebration on submit!</p>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -327,8 +377,8 @@ const ExperienceSharingForm = ({ onClose }: ExperienceSharingFormProps) => {
                 Next Step
               </Button>
             ) : (
-              <Button onClick={handleSubmit} className="btn-gradient px-8">
-                🎉 Submit Experience
+              <Button onClick={handleSubmit} className="btn-gradient px-8 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                ✨ Share & Earn 50 Coins ✨
               </Button>
             )}
           </div>
